@@ -3,7 +3,7 @@ const Helper = require("../utils/helper");
 
 const all = async (req, res, next) => {
   let users = await DB.find();
-  Helper.fMsg(res, "All Users Testing", users);
+  Helper.fMsg(res, "All Users", users);
 };
 
 const add = async (req, res, next) => {
