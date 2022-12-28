@@ -30,6 +30,9 @@ module.exports = {
     cat: Joi.string()
       .regex(/^[0-9a-fA-F]{24}$/)
       .required(),
+    tag: Joi.string()
+      .regex(/^[0-9a-fA-F]{24}$/)
+      .required(),
     image: Joi.string().required(),
     title: Joi.string().required(),
     desc: Joi.string().required(),
@@ -47,6 +50,9 @@ module.exports = {
       id: Joi.string()
         .regex(/^[0-9a-fA-F]{24}$/)
         .required(),
+    }),
+    page: Joi.object({
+      page: Joi.number().required(),
     }),
     image: Joi.object({
       image: Joi.string().required(),

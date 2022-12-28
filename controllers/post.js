@@ -2,12 +2,14 @@ const DB = require("../models/post");
 const Helper = require("../utils/helper");
 
 const all = async (req, res, next) => {
-  let posts = await DB.find().populate("user cat", "-password -__v");
+  let posts = await DB.find();
+  //.populate("user cat", "-password -__v");
   Helper.fMsg(res, "All Posts", posts);
 };
 
 const get = async (req, res, next) => {
-  let post = await DB.findById(req.params.id).populate("user");
+  let post = await DB.findById(req.params.id);
+  //.populate("user");
   if (post) {
     Helper.fMsg(res, "Get Single Post", post);
   } else {
@@ -54,6 +56,15 @@ const byUserId = async (req, res, next) => {
   Helper.fMsg(res, "All Posts By User", posts);
 };
 
+const paginate = async (req, res, next) => {
+  let page = req.params.page;
+  page = page == 1 ? 0 : page - 1;
+  let limit = Number(process.env.POST_LIMIT);
+  let skipCount = limit * page;
+  let posts = await DB.find().skip(skipCount).limit(limit);
+  Helper.fMsg(res, "Paginated Posts", posts);
+};
+
 module.exports = {
   all,
   get,
@@ -62,4 +73,5 @@ module.exports = {
   drop,
   byCatId,
   byUserId,
+  paginate,
 };
