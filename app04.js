@@ -13,20 +13,25 @@ app.use(fileUpload());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const userRoute = require("./routes/user");
-const catRoute = require("./routes/cat");
-const tagRoute = require("./routes/tag");
 const postRoute = require("./routes/post");
-const commentRoute = require("./routes/comment");
+const { saveFile, saveFiles, deleteFile } = require("./utils/gallery");
+
+// upload file
+// app.post("/gallery", saveFile, (req, res, next) => {
+//   res.status(200).json({ msg: "file upload", filename: req.body.image });
+// });
+
+app.post("/gallery", saveFiles, (req, res, next) => {
+  res.status(200).json({ msg: "file upload", filenames: req.body.images });
+});
+
+// app.post("/gallery", async (req, res, next) => {
+//   await deleteFile(req.body.name);
+//   res.status(200).json({ msg: "file Deleted" });
+// });
 
 app.use("/users", userRoute);
-app.use("/cats", catRoute);
-app.use("/tags", tagRoute);
 app.use("/posts", postRoute);
-app.use("/comments", commentRoute);
-
-app.get("*", (req, res) => {
-  res.json({ msg: "No Route Found!" });
-});
 
 app.use((err, req, res, next) => {
   err.status = err.status || 200;
